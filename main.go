@@ -1,13 +1,24 @@
 package main
 
-import "fmt"
-
-type model struct {
-	src     string
-	version string
-}
+import (
+	"fmt"
+	"log"
+	"net/http"
+)
 
 func main() {
-	m := model{"http://path_to_model", "1.0"}
-	fmt.Println(m)
+
+	dir := "."
+	addr := ":9000"
+
+	fs := http.FileServer(http.Dir(dir))
+
+	http.HandleFunc("/", func(res http.ResponseWriter, req *http.Request) {
+		res.Header().Set("Content-Type", "text/html")
+		fmt.Fprint(res, "<h1>Sitehub</h1>")
+	})
+
+	http.Handle("/static/", http.StripPrefix("/static", fs))
+
+	log.Fatal(http.ListenAndServe(addr, nil))
 }
