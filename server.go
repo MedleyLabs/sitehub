@@ -8,14 +8,14 @@ import (
 )
 
 // The directory from which to serve files.
-const Dir = "."
+const ServeDir = "."
 
 // The address from which to serve files.
 const Addr = ":9000"
 
 // startFileServer starts the file server to download files.
 func startFileServer() {
-	fs := http.FileServer(http.Dir(Dir))
+	fs := http.FileServer(http.Dir(ServeDir))
 
 	index, err := ioutil.ReadFile("index.html")
 
