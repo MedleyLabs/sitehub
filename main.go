@@ -27,7 +27,7 @@ func DataHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	fmt.Println(vars)
 	w.WriteHeader(http.StatusOK)
-	fmt.Fprintf(w, "Patient ID: %v\n", vars["patient_id"])
+	fmt.Fprintf(w, "User ID: %v\n", vars["user_id"])
 }
 
 func ModelHandler(w http.ResponseWriter, r *http.Request) {

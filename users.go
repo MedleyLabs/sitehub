@@ -8,7 +8,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-type Patient struct {
+type User struct {
 	ID        string `json:"id"`
 	Lastname  string `json:"lastname"`
 	Firstname string `json:"firstname"`
@@ -16,49 +16,49 @@ type Patient struct {
 	Email     string `json:"email"`
 }
 
-var patients = []Patient{}
+var users = []User{}
 var idCounter int
 
 func startAPI() {
 	r := mux.NewRouter()
-	patientsR := r.PathPrefix("/patients").Subrouter()
-	patientsR.Path("").Methods(http.MethodGet).HandlerFunc(getAllPatients)
-	patientsR.Path("").Methods(http.MethodPost).HandlerFunc(createPatient)
-	patientsR.Path("/{id}").Methods(http.MethodGet).HandlerFunc(getPatientByID)
-	patientsR.Path("/{id}").Methods(http.MethodPut).HandlerFunc(updatePatient)
-	patientsR.Path("/{id}").Methods(http.MethodDelete).HandlerFunc(deletePatient)
+	usersR := r.PathPrefix("/users").Subrouter()
+	usersR.Path("").Methods(http.MethodGet).HandlerFunc(getAllUsers)
+	usersR.Path("").Methods(http.MethodPost).HandlerFunc(createUser)
+	usersR.Path("/{id}").Methods(http.MethodGet).HandlerFunc(getUserByID)
+	usersR.Path("/{id}").Methods(http.MethodPut).HandlerFunc(updateUser)
+	usersR.Path("/{id}").Methods(http.MethodDelete).HandlerFunc(deleteUser)
 
 	fmt.Println("Start listening")
 	fmt.Println(http.ListenAndServe(":8080", r))
 }
 
-func getAllPatients(w http.ResponseWriter, r *http.Request) {
+func getAllUsers(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
-	if err := json.NewEncoder(w).Encode(patients); err != nil {
+	if err := json.NewEncoder(w).Encode(users); err != nil {
 		fmt.Println(err)
 		w.WriteHeader(http.StatusInternalServerError)
 	}
 }
 
-func getPatientByID(w http.ResponseWriter, r *http.Request) {
+func getUserByID(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Not implemented")
 }
 
-func updatePatient(w http.ResponseWriter, r *http.Request) {
+func updateUser(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Not implemented")
 }
 
-func deletePatient(w http.ResponseWriter, r *http.Request) {
+func deleteUser(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Not implemented")
 }
 
-func createPatient(w http.ResponseWriter, r *http.Request) {
-	p := Patient{}
+func createUser(w http.ResponseWriter, r *http.Request) {
+	p := User{}
 	if err := json.NewDecoder(r.Body).Decode(&p); err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	patients = append(patients, p)
+	users = append(users, p)
 	response, err := json.Marshal(&u)
 	if err != nil {
 		fmt.Println(err)
